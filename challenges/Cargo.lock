@@ -9,8 +9,13 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0ea22880d78093b0cbe17c89f64a7d457941e65759157ec6cb31a31d652b05e5"
 
 [[package]]
-name = "cryptopals"
+name = "cryptopals-challenges"
 version = "0.1.0"
 dependencies = [
  "base64",
+ "utils",
 ]
+
+[[package]]
+name = "utils"
+version = "0.1.0"

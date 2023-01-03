@@ -1,6 +1,6 @@
 //! Cryptopals :: Set 1 :: Challenge 1
 //! Convert hex to base64
-use std::{num::ParseIntError};
+use utils::hex_str_to_vec;
 
 fn vec_to_base64(input: Vec<u8>) -> String {
     let lut = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
@@ -28,15 +28,7 @@ fn vec_to_base64(input: Vec<u8>) -> String {
     output
 }
 
-fn hex_str_to_vec(input: &str) -> Result<Vec<u8>, ParseIntError> {
-    let mut bytes = Vec::new();
-    for b in (0..input.len()).step_by(2) {
-        bytes.push(u8::from_str_radix(&input[b..b+2], 16)?);
-    }
-    Ok(bytes)
-}
-
-fn hex_str_to_base64(input: &str) -> Result<String, ParseIntError> {
+fn hex_str_to_base64(input: &str) -> Result<String, Box<dyn std::error::Error>> {
     Ok(vec_to_base64(hex_str_to_vec(input)?))
 }
 
@@ -57,11 +49,6 @@ mod tests {
             ),
                 "SSdtIGtpbGxpbmcgeW91ciBicmFpbiBsaWtlIGEgcG9pc29ub3VzIG11c2hyb29t"
             );
-
-        assert_eq!(
-            hex_str_to_vec("aabbccdd1122334455").unwrap(),
-            vec![0xaa,0xbb,0xcc,0xdd,0x11,0x22,0x33,0x44,0x55]
-        );
 
         assert_eq!(
             hex_str_to_base64(
