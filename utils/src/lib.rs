@@ -16,8 +16,8 @@ use std::io::{Error, ErrorKind::InvalidData};
 /// any invalid hexadecimal digits.
 /// ```
 /// use utils::hex_str_to_vec;
-/// assert!(hex_str_to_vec("0").is_error());
-/// assert!(hex_str_to_vec("abcdefgh").is_error());
+/// assert!(hex_str_to_vec("0").is_err());
+/// assert!(hex_str_to_vec("abcdefgh").is_err());
 /// ```
 pub fn hex_str_to_vec(input: &str) -> Result<Vec<u8>, Box<dyn std::error::Error>> {
     if input.len() % 2 != 0 {
