@@ -1,4 +1,18 @@
-use std::io::{Error, ErrorKind::InvalidData};
+use std::error::Error;
+use std::fmt::{Display, Result};
+
+#[derive(Debug)]
+pub enum CryptopalsUtilsError {
+    InvalidInput(String),
+    ParseIntError(String)
+}
+
+impl Error for CryptopalsUtilsError {}
+impl Display for CryptopalsUtilsError {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> Result {
+        write!(f, "error: {:?}", self)
+    }
+}
 
 /// Convert string containing hexadecimal numbers to a vector of bytes containing these numbers.
 ///
@@ -19,13 +33,16 @@ use std::io::{Error, ErrorKind::InvalidData};
 /// assert!(hex_str_to_vec("0").is_err());
 /// assert!(hex_str_to_vec("abcdefgh").is_err());
 /// ```
-pub fn hex_str_to_vec(input: &str) -> Result<Vec<u8>, Box<dyn std::error::Error>> {
+pub fn hex_str_to_vec(input: &str) -> std::result::Result<Vec<u8>, CryptopalsUtilsError> {
     if input.len() % 2 != 0 {
-        return Err(Box::new(Error::new(InvalidData, "the number of characters is even")));
+        return Err(CryptopalsUtilsError::InvalidInput("the number of characters is even".to_string()));
     }
     let mut bytes = Vec::new();
     for b in (0..input.len()).step_by(2) {
-        bytes.push(u8::from_str_radix(&input[b..b+2], 16)?);
+        match u8::from_str_radix(&input[b..b+2], 16) {
+            Ok(i) => bytes.push(i),
+            Err(e) => return Err(CryptopalsUtilsError::ParseIntError(e.to_string()))
+        }
     }
     Ok(bytes)
 }
