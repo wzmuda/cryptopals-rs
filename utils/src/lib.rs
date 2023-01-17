@@ -47,6 +47,25 @@ pub fn hex_str_to_vec(input: &str) -> std::result::Result<Vec<u8>, CryptopalsUti
     Ok(bytes)
 }
 
+/// Convert vector of integers to a string of lowercase hex numbers without leading 0x.
+///
+/// # Examples
+///
+/// ```
+/// use utils::vec_to_hex_str;
+/// let v = vec![1, 2];
+/// assert_eq!(vec_to_hex_str(v), "12");
+/// let v = vec![0xde, 0xad, 0xbe, 0xef];
+/// assert_eq!(vec_to_hex_str(v), "deadbeef");
+/// ```
+pub fn vec_to_hex_str(input: Vec<u8>) -> String {
+    let mut output = String::new();
+    for byte in input.into_iter() {
+        output.push_str(format!("{:x?}", byte).as_str());
+    }
+    output
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -73,5 +92,12 @@ mod tests {
         assert!(hex_str_to_vec("0").is_err());
         assert!(hex_str_to_vec("000").is_err());
         assert!(hex_str_to_vec("elo").is_err());
+    }
+
+    #[test]
+    fn test_vec_to_hex_str() {
+        assert_eq!(vec_to_hex_str(vec![1, 2, 3]), "123");
+        assert_eq!(vec_to_hex_str(vec![0xde, 0xad, 0xbe, 0xef]), "deadbeef");
+        assert_eq!(vec_to_hex_str(vec![0xa]), "a");
     }
 }
