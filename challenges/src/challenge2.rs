@@ -1,7 +1,7 @@
 //! Cryptopals :: Set 1 :: Challenge 2
 //! Write a function that takes two equal-length buffers and produces their XOR combination.
 
-use utils::{hex_str_to_vec, vec_to_hex_str};
+use utils::{ToVecExt, ToHexStringExt};
 
 fn xor_two_strings(input_a: &str, input_b: &str) -> Option<String> {
     if input_a.len() != input_b.len() {
@@ -9,13 +9,13 @@ fn xor_two_strings(input_a: &str, input_b: &str) -> Option<String> {
     }
 
     let mut output = Vec::new();
-    let input_a = hex_str_to_vec(input_a).unwrap();
-    let input_b = hex_str_to_vec(input_b).unwrap();
+    let input_a = input_a.to_vec().unwrap();
+    let input_b = input_b.to_vec().unwrap();
     for (a, b) in input_a.into_iter().zip(input_b.into_iter()) {
         output.push(a ^ b);
     }
 
-    Some(vec_to_hex_str(output))
+    Some(output.to_hex_string())
 }
 
 #[cfg(test)]

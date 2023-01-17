@@ -1,6 +1,6 @@
 //! Cryptopals :: Set 1 :: Challenge 1
 //! Convert hex to base64
-use utils::hex_str_to_vec;
+use utils::ToVecExt;
 
 fn vec_to_base64(input: Vec<u8>) -> String {
     let lut = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
@@ -29,7 +29,7 @@ fn vec_to_base64(input: Vec<u8>) -> String {
 }
 
 fn hex_str_to_base64(input: &str) -> Result<String, Box<dyn std::error::Error>> {
-    Ok(vec_to_base64(hex_str_to_vec(input)?))
+    Ok(vec_to_base64(input.to_vec()?))
 }
 
 #[cfg(test)]
