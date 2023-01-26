@@ -12,15 +12,14 @@ fn xored_hex_str_find_key(input: &Vec<u8>) -> char {
     // Build a hashmap with bytes' values as keys and their frequency in that vector as values
     let mut m = HashMap::new();
     for b in input {
-        *m.entry(b).or_insert(0) +=1;
+        *m.entry(*b).or_insert(0) +=1;
     }
 
     // Assumption: ' ' (space) is the most frequent character in an English sentence
     let (most_frequent_char, _) = m.iter().max_by_key(|(_, count)| *count).unwrap();
 
     const SPACE_ASCII: u8 = 32;
-    // TODO why is most_frequent_char &&u8?!
-    (**most_frequent_char ^ SPACE_ASCII) as char
+    (*most_frequent_char ^ SPACE_ASCII) as char
 }
 
 fn xored_hex_str_decrypt(input: &str) -> String {
